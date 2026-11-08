@@ -22,6 +22,51 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
         </div>
     @endif
+    
+    <div class="row g-3">
+        @foreach ([
+            ['Total Aset', $ringkasan['total'], '#2F80ED', '<path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/>'],
+            ['Kondisi Baik', $ringkasan['baik'], '#4CAF6A', '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>'],
+            ['Perlu Perhatian', $ringkasan['rusak'], '#EF5350', '<path d="M12 3l10 18H2L12 3z"/><path d="M12 10v5M12 18h.01"/>'],
+            ['Perlu Kalibrasi', $ringkasan['kalibrasi'], '#E8890C', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'],
+        ] as [$label, $angka, $warna, $ikon])
+            <div class="col-6 col-lg-3">
+                <div class="card h-100 border-0 text-white position-relative overflow-hidden" style="background: {{ $warna }}">
+                    <svg class="position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); opacity: .25" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{!! $ikon !!}</svg>
+                    <div class="card-body text-end py-3">
+                        <div class="fw-bold" style="font-size: 30px; line-height: 1.1">{{ $angka }}</div>
+                        <div style="font-size: 13px; opacity: .9">{{ $label }}</div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-12 col-md-6">
+                    <input type="search" wire:model.live.debounce.400ms="cari" class="form-control" placeholder="Cari nama, kode, atau merk...">
+                </div>
+                <div class="col-6 col-md-3">
+                    <select wire:model.live="status" class="form-select">
+                        <option value="">Semua status</option>
+                        @foreach (\App\Models\Aset::STATUS as $nilai => $label)
+                            <option value="{{ $nilai }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-6 col-md-3">
+                    <select wire:model.live="kategori" class="form-select">
+                        <option value="">Semua kategori</option>
+                        @foreach ($daftarKategori as $k)
+                            <option value="{{ $k->id }}">{{ $k->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="card">
         <div class="table-responsive">
@@ -70,7 +115,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="8" class="text-center text-secondary py-5">Belum ada aset.</td></tr>
+                        <tr><td colspan="8" class="text-center text-secondary py-5">Tidak ada aset yang cocok.</td></tr>
                     @endforelse
                 </tbody>
             </table>

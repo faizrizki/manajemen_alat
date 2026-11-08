@@ -27,6 +27,20 @@ class AsetTest extends TestCase
         Livewire::test(Index::class)->assertViewHas('daftarAset', fn ($p) => $p->count() === 10 && $p->total() === 25);
     }
 
+    public function test_filter_dan_ringkasan_dasbor(): void
+    {
+        Aset::factory()->create(['nama' => 'Ventilator ICU', 'status' => 'baik']);
+        Aset::factory()->create(['nama' => 'Monitor Pasien', 'status' => 'rusak']);
+
+        Livewire::test(Index::class)
+            ->assertViewHas('ringkasan', fn ($r) => $r['total'] === 2 && $r['baik'] === 1 && $r['rusak'] === 1)
+            ->set('cari', 'Ventilator')
+            ->assertViewHas('daftarAset', fn ($p) => $p->total() === 1)
+            ->set('cari', '')
+            ->set('status', 'rusak')
+            ->assertViewHas('daftarAset', fn ($p) => $p->total() === 1 && $p->first()->nama === 'Monitor Pasien');
+    }
+
     public function test_tambah_aset_gagal_bila_field_wajib_kosong(): void
     {
         Livewire::test(Form::class)
