@@ -5,6 +5,8 @@ Aplikasi manajemen aset dan alat medis rumah sakit, dibuat dengan Laravel dan Li
 ## Fitur
 
 - Dasbor daftar aset dengan pagination (10 data per halaman)
+- Kartu ringkasan: total aset, kondisi baik, perlu perhatian (rusak, dalam perbaikan, perlu perbaikan), dan perlu kalibrasi
+- Pencarian (nama, kode, atau merk) dan filter status serta kategori, langsung tanpa reload halaman
 - Tambah dan ubah aset dalam satu form, dengan validasi
 - Detail aset: data lengkap, status kalibrasi, dan riwayat perawatan
 - Hapus aset dengan modal konfirmasi (soft delete, data tetap tersimpan)
@@ -23,7 +25,7 @@ Aplikasi manajemen aset dan alat medis rumah sakit, dibuat dengan Laravel dan Li
 ```
 app/
 ├── Livewire/Aset/
-│   ├── Index.php      # dasbor, pagination, hapus
+│   ├── Index.php      # dasbor, kartu ringkasan, pencarian, filter, pagination, hapus
 │   ├── Form.php       # tambah DAN ubah aset
 │   └── Show.php       # detail dan riwayat perawatan
 └── Models/
@@ -51,7 +53,7 @@ Kebutuhan: PHP 8.3 ke atas, Composer, dan MySQL.
 
 1. Buat database kosong bernama `manajemen_alat` di MySQL.
 
-2. Pasang dependensi dan siapkan file `.env`:
+2. Pasang dependensi dan siapkan file `.env` (bila folder `vendor` dan `.env` sudah ada, langkah ini boleh dilewati):
 
    ```bash
    composer install
@@ -59,7 +61,7 @@ Kebutuhan: PHP 8.3 ke atas, Composer, dan MySQL.
    php artisan key:generate
    ```
 
-3. Buka `.env`, lalu ubah bagian database (sesuaikan username dan password MySQL):
+3. Pastikan bagian database di `.env` seperti berikut (sesuaikan username dan password MySQL):
 
    ```
    DB_CONNECTION=mysql
