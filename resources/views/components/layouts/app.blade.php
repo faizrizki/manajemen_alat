@@ -103,6 +103,15 @@
         .card-judul { color: var(--navy); font-size: 16px; font-weight: 600; }
         .dt-label { color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
 
+        .tabel-aset { min-width: 620px; }
+        @media (min-width: 992px) { .tabel-aset { min-width: 940px; } }
+        @media (min-width: 768px) { .aside-kalibrasi { max-width: 320px; } }
+        @media (max-width: 575.98px) {
+            .page-title { font-size: 20px; }
+            .app-main { padding: 12px !important; }
+            .btn-page { min-width: 30px; padding: 0 8px; }
+        }
+
         .table { font-size: 13.5px; }
         .table thead th { background: #F7F9FC; color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
         .table > :not(caption) > * > * { padding: 11px 12px; }
@@ -130,12 +139,12 @@
     <header class="app-header d-flex align-items-center justify-content-between px-3 px-lg-4">
         <a href="{{ route('aset.index') }}" wire:navigate class="app-brand">
             @if ($logo)
-                <img src="{{ $logo }}" alt="RS UMMI"><span class="divider"></span>
+                <img src="{{ $logo }}" alt="RS UMMI"><span class="divider d-none d-md-block"></span>
             @endif
-            <span>Manajemen Aset</span>
+            <span class="{{ $logo ? 'd-none d-md-inline' : '' }}">Manajemen Aset</span>
         </a>
 
-        <span class="small text-secondary d-none d-sm-inline">{{ $crumb }}</span>
+        <span class="small text-secondary d-none d-md-inline">{{ $crumb }}</span>
 
         <nav class="d-lg-none d-flex gap-3 small fw-semibold" aria-label="Menu">
             <a href="{{ route('aset.index') }}" wire:navigate>Dasbor</a>

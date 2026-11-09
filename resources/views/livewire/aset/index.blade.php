@@ -32,7 +32,7 @@
         ] as [$label, $angka, $warna, $ikon])
             <div class="col-6 col-lg-3">
                 <div class="card h-100 border-0 text-white position-relative overflow-hidden" style="background: {{ $warna }}">
-                    <svg class="position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); opacity: .25" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{!! $ikon !!}</svg>
+                    <svg class="position-absolute d-none d-sm-block" style="left: 14px; top: 50%; transform: translateY(-50%); opacity: .25" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{!! $ikon !!}</svg>
                     <div class="card-body text-end py-3">
                         <div class="fw-bold" style="font-size: 30px; line-height: 1.1">{{ $angka }}</div>
                         <div style="font-size: 13px; opacity: .9">{{ $label }}</div>
@@ -70,11 +70,12 @@
 
     <div class="card">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0" style="min-width: 940px">
+            <table class="table table-hover align-middle mb-0 tabel-aset">
                 <thead>
                     <tr>
-                        <th class="ps-3">No</th><th>Kode</th><th>Nama Aset</th><th>Kategori</th>
-                        <th>Lokasi</th><th>Status</th><th>Kalibrasi Berikutnya</th><th class="text-end pe-3">Aksi</th>
+                        <th class="ps-3">No</th><th>Kode</th><th>Nama Aset</th>
+                        <th class="d-none d-lg-table-cell">Kategori</th><th class="d-none d-lg-table-cell">Lokasi</th>
+                        <th>Status</th><th>Kalibrasi Berikutnya</th><th class="text-end pe-3">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,9 +87,10 @@
                             <td>
                                 <div class="fw-semibold">{{ $aset->nama }}</div>
                                 <div class="text-secondary" style="font-size: 12px">{{ $aset->merk }}</div>
+                                <div class="text-secondary d-lg-none" style="font-size: 12px">{{ $aset->kategori->nama }} · {{ $aset->lokasi->nama }}</div>
                             </td>
-                            <td>{{ $aset->kategori->nama }}</td>
-                            <td>{{ $aset->lokasi->nama }}</td>
+                            <td class="d-none d-lg-table-cell">{{ $aset->kategori->nama }}</td>
+                            <td class="d-none d-lg-table-cell">{{ $aset->lokasi->nama }}</td>
                             <td>
                                 <span class="pil badge-{{ $aset->status }}">{{ \App\Models\Aset::STATUS[$aset->status] ?? $aset->status }}</span>
                             </td>

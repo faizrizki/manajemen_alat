@@ -159,6 +159,50 @@ class AsetTest extends TestCase
         $this->get(route('aset.edit', $aset))->assertOk()->assertSee($aset->kode_aset);
     }
 
+    public function test_catat_perawatan_menambah_riwayat(): void
+    {
+        $aset = Aset::factory()->create(['tgl_kalibrasi_berikutnya' => null]);
+
+        Livewire::test(Show::class, ['aset' => $aset])
+            ->set('jenis', 'servis')
+            ->set('keterangan', 'Ganti filter udara')
+            ->set('biaya', '150000')
+            ->call('catat')
+            ->assertHasNoErrors()
+            ->assertSee('Ganti filter udara')
+            ->assertSet('keterangan', '');
+
+        $this->assertDatabaseHas('perawatan', ['aset_id' => $aset->id, 'keterangan' => 'Ganti filter udara', 'teknisi' => null]);
+        $this->assertNull($aset->fresh()->tgl_kalibrasi_berikutnya);
+    }
+
+    public function test_catat_perawatan_gagal_bila_keterangan_kosong(): void
+    {
+        $aset = Aset::factory()->create();
+
+        Livewire::test(Show::class, ['aset' => $aset])
+            ->call('catat')
+            ->assertHasErrors(['keterangan'])
+            ->assertSee('Keterangan wajib diisi.');
+
+        $this->assertDatabaseCount('perawatan', 0);
+    }
+
+    public function test_catat_kalibrasi_memajukan_jadwal_setahun(): void
+    {
+        $aset = Aset::factory()->create(['tgl_kalibrasi_berikutnya' => now()->subDays(5)]);
+        $tanggal = now()->subDay()->format('Y-m-d');
+
+        Livewire::test(Show::class, ['aset' => $aset])
+            ->set('tanggal', $tanggal)
+            ->set('jenis', 'kalibrasi')
+            ->set('keterangan', 'Kalibrasi tahunan')
+            ->call('catat')
+            ->assertHasNoErrors();
+
+        $this->assertSame(now()->subDay()->addYear()->format('Y-m-d'), $aset->fresh()->tgl_kalibrasi_berikutnya->format('Y-m-d'));
+    }
+
     public function test_status_kalibrasi(): void
     {
         $this->assertSame('tidak_wajib', (new Aset)->statusKalibrasi());

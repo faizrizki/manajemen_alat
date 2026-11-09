@@ -9,6 +9,8 @@ Aplikasi manajemen aset dan alat medis rumah sakit, dibuat dengan Laravel dan Li
 - Pencarian (nama, kode, atau merk) dan filter status serta kategori, langsung tanpa reload halaman
 - Tambah dan ubah aset dalam satu form, dengan validasi
 - Detail aset: data lengkap, status kalibrasi, dan riwayat perawatan
+- Catat perawatan baru dari halaman detail; bila jenisnya kalibrasi, jadwal kalibrasi berikutnya maju otomatis satu tahun
+- Tampilan responsif untuk layar HP, tablet, dan desktop
 - Hapus aset dengan modal konfirmasi (soft delete, data tetap tersimpan)
 - Peringatan kalibrasi: baris diberi warna dan badge bila terlambat atau jatuh tempo dalam 30 hari
 - Kode aset dibuat otomatis (AST-0001, AST-0002, dan seterusnya)
@@ -27,7 +29,7 @@ app/
 ├── Livewire/Aset/
 │   ├── Index.php      # dasbor, kartu ringkasan, pencarian, filter, pagination, hapus
 │   ├── Form.php       # tambah DAN ubah aset
-│   └── Show.php       # detail dan riwayat perawatan
+│   └── Show.php       # detail, riwayat, catat perawatan
 └── Models/
     ├── Aset.php       # relasi, status, kode, kalibrasi
     ├── Kategori.php

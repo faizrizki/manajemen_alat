@@ -34,6 +34,13 @@
         </div>
     </div>
 
+    @if (session('sukses'))
+        <div class="alert alert-sukses alert-dismissible mb-0 py-3" role="status">
+            {{ session('sukses') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+        </div>
+    @endif
+
     <div class="d-flex flex-wrap gap-3 align-items-start">
         <div class="d-flex flex-column gap-3" style="flex: 999 1 520px; min-width: 0">
             <div class="card">
@@ -46,6 +53,46 @@
                         </div>
                     @endforeach
                 </dl>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-white py-3 px-4"><h2 class="card-judul mb-0">Catat Perawatan</h2></div>
+                <form wire:submit="catat" class="p-3 p-sm-4" novalidate>
+                    <div class="row g-3">
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <label class="form-label fw-semibold" for="tanggal">Tanggal</label>
+                            <input id="tanggal" type="date" wire:model="tanggal" class="form-control @error('tanggal') is-invalid @enderror">
+                            @error('tanggal') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <label class="form-label fw-semibold" for="jenis">Jenis</label>
+                            <select id="jenis" wire:model="jenis" class="form-select @error('jenis') is-invalid @enderror">
+                                @foreach (\App\Models\Perawatan::JENIS as $j)
+                                    <option value="{{ $j }}">{{ ucfirst($j) }}</option>
+                                @endforeach
+                            </select>
+                            @error('jenis') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <label class="form-label fw-semibold" for="teknisi">Teknisi</label>
+                            <input id="teknisi" type="text" wire:model="teknisi" class="form-control @error('teknisi') is-invalid @enderror">
+                            @error('teknisi') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <label class="form-label fw-semibold" for="biaya">Biaya (Rp)</label>
+                            <input id="biaya" type="number" min="0" wire:model="biaya" class="form-control @error('biaya') is-invalid @enderror">
+                            @error('biaya') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold" for="keterangan">Keterangan <span class="text-danger">*</span></label>
+                            <textarea id="keterangan" rows="2" wire:model="keterangan" class="form-control @error('keterangan') is-invalid @enderror"></textarea>
+                            @error('keterangan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+                    <div class="mt-3 text-end">
+                        <button type="submit" class="btn btn-navy" wire:loading.attr="disabled">Simpan Perawatan</button>
+                    </div>
+                </form>
             </div>
 
             <div class="card">
@@ -76,7 +123,7 @@
             </div>
         </div>
 
-        <aside style="flex: 1 1 260px; max-width: 320px; min-width: 0">
+        <aside class="aside-kalibrasi" style="flex: 1 1 260px; min-width: 0">
             <div class="card">
                 <div class="card-body p-3 d-flex flex-column gap-2">
                     <div class="d-flex align-items-center justify-content-between">
